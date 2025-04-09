@@ -1,0 +1,140 @@
+.perfil-container {
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    max-width: 800px;
+    height: 100vh;
+    margin: 0 auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  .perfil-header {
+    padding: 2 rem;
+    background-color: #4f46e5;
+    border-top-left-radius: 12px;
+    border-top-right-radius: 12px;
+    color: #fff;
+    text-align: center;
+  }
+  
+  .perfil-header h2 {
+    margin: 0;
+    font-size: 2 rem;
+    font-weight: 700;
+  }
+  
+  .perfil-main {
+    padding: 2rem;
+    overflow-y: auto;
+    background-color: #f7f7f7;
+  }
+  
+  .perfil-upload {
+    display: flex;
+    align-items: center;
+    margin-bottom: 1rem;
+  }
+  
+  .file-label {
+    background-color: #4f46e5;
+    color: #fff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    margin-right: 1rem;
+    cursor: pointer;
+    font-weight: 600;
+  }
+  
+  .perfil-file {
+    display: none;
+  }
+
+  .perfil-textarea,
+  .perfil-input {
+    width: 100%;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    background-color: #fff;
+    transition: border-color 0.3s;
+    color: #333;
+  }
+  
+  .perfil-textarea {
+    min-height: 100px;
+    resize: vertical;
+  }
+  
+  .perfil-input:focus,
+  .perfil-textarea:focus {
+    border-color: #4f46e5;
+    outline: none;
+  }
+  
+  .perfil-inputs {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .perfil-section {
+    background-color: #fff;
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+  }
+  
+  .perfil-section h3 {
+    margin-top: 0;
+    font-size: 1.5rem;
+    color: #4f46e5;
+  }
+  
+  .perfil-section p {
+    margin: 0.5rem 0 0;
+    color: #555;
+  }
+  
+  .perfil-footer {
+    padding: 1rem 2rem;
+    background-color: #ffffff;
+    border-top: 1px solid #ddd;
+    text-align: center;
+  }
+  
+  .perfil-button {
+    width: 100%;
+    padding: 1.9rem;
+    background-color: #4f46e5;
+    color: #fff;
+    font-size: 1rem;
+    font-weight: 600;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .perfil-button:hover {
+    background-color: #3730a3;
+  }
+
+  @media (max-width: 768px) {
+    .perfil-container {
+      max-width: 100%;
+      border-radius: 0;
+      box-shadow: none;
+    }
+    .perfil-header, .perfil-footer {
+      padding: 1rem;
+    }
+    .perfil-main {
+      padding: 1rem;
+    }
+  }
+  
+  
+  
