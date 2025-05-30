@@ -23,6 +23,7 @@ const Header = () => {
           <NavLink to="/" className={({isActive})=>`auth-link ${isActive ? 'active' : ''}`}>Inicio</NavLink>
           <NavLink to="/sobre-nosotros" className={({isActive})=>`auth-link ${isActive ? 'active' : ''}`}>Sobre nosotros</NavLink>
           <NavLink to="/como-usar" className={({isActive})=>`auth-link ${isActive ? 'active' : ''}`}>Cómo usar</NavLink>
+          <NavLink to="/perfil" className={({isActive})=>`auth-link ${isActive ? 'active' : ''}`}>Perfil</NavLink>
         </div>
         
         <div className="auth-section">
