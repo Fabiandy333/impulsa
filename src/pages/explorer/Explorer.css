@@ -7,6 +7,13 @@
   color: #2c3e50;
 }
 
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+}
+
 /* ===== BARRA DE BÚSQUEDA ===== */
 .search-section {
   margin-bottom: 30px;
@@ -286,7 +293,6 @@
 }
 /* ===== CONTENEDOR SCROLLABLE ===== */
 .proyectos-feed-container {
-  flex: 1;
   overflow-y: auto;
   padding-right: 10px;
   margin-bottom: 20px;
