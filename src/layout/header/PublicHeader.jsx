@@ -3,14 +3,8 @@ import "./Header.css";
 import logo from '../../../public/Logo.png'
 import useAuth from "../../pages/auth/use-auth";
 
-const Header = () => {
-  const { userLooged, logout } = useAuth();
-  const navigate = useNavigate();
-
-  const handleLogout = async () => {
-    await logout();
-    navigate("/");
-  }
+const PublicHeader = () => {
+  const { userLooged } = useAuth();
 
   return (
     <header className="main-header">
@@ -30,21 +24,12 @@ const Header = () => {
         </div>
 
         <div className="auth-section">
-          {userLooged ? (
-            <>
-              <NavLink to="/inicio" className="auth-link">Panel</NavLink>
-              <button className="auth-link" onClick={handleLogout}>Cerrar sesión</button>
-            </>
-          ) : (
-            <>
-              <NavLink to="/inicio-sesion" className="auth-link">Iniciar Sesión</NavLink>
-              <NavLink to="/registro" className="auth-link register">Registrarse</NavLink>
-            </>
-          )}
+          <NavLink to="/inicio-sesion" className="auth-link">Iniciar Sesión</NavLink>
+          <NavLink to="/registro" className="auth-link register">Registrarse</NavLink>
         </div>
       </nav>
     </header>
   );
 };
 
-export default Header;
+export default PublicHeader;
