@@ -23,50 +23,79 @@ router.post('/usuario', async (req, res) => {
 });
 
 
-/**
- * Actualizar perfil del usuario
- * Ruta: PUT /api/usuario/:id
- * Body esperado: { fotoPerfilUrl, biografia }
- */
-router.put('/usuario/:id', async (req, res) => {
-  const { id } = req.params;
-  const { fotoPerfilUrl, biografia } = req.body;
+// Obtener perfil del usuario logueado (por ahora simulando id 1)
+router.get('/usuario/actual', async (req, res) => {
+  const idUsuario = 2; // Suplente, luego se sacará del token de sesión
 
   try {
-    const query = `
-      UPDATE usuario
-      SET fotoPerfilUrl = $1, biografia = $2
-      WHERE idUsuario = $3
+    const usuarioQuery = `
+      SELECT u.idUsuario, u.nombre, u.email, u.biografia, u.fotoPerfilUrl, r.nombreRol
+      FROM usuario u
+      JOIN rol r ON u.idRol = r.idRol
+      WHERE u.idUsuario = $1
     `;
-    const values = [fotoPerfilUrl, biografia, id];
-    await pool.query(query, values);
+    const usuarioResult = await pool.query(usuarioQuery, [idUsuario]);
 
-    res.status(200).json({ mensaje: 'Perfil actualizado con éxito' });
+    if (usuarioResult.rows.length === 0) {
+      return res.status(404).json({ mensaje: 'Usuario no encontrado' });
+    }
+
+    const redesQuery = `
+      SELECT idRedSocial, tipo, url
+      FROM redSocial
+      WHERE idUsuario = $1
+    `;
+    const redesResult = await pool.query(redesQuery, [idUsuario]);
+
+    const datosPerfil = {
+      ...usuarioResult.rows[0],
+      redesSociales: redesResult.rows
+    };
+
+    //Mostrar datos completos en consola
+    console.log('Perfil del usuario:', JSON.stringify(datosPerfil, null, 2));
+
+    res.json(datosPerfil);
   } catch (error) {
-    console.error('Error al actualizar perfil:', error);
-    res.status(500).json({ error: 'Error al actualizar perfil' });
+    console.error('❌ Error al obtener perfil:', error);
+    res.status(500).json({ mensaje: 'Error interno del servidor' });
   }
 });
 
-/**
- * Agregar una red social al usuario
- * Ruta: POST /api/red-social
- * Body esperado: { tipo, url, idUsuario }
- */
-router.post('/red-social', async (req, res) => {
-  const { tipo, url, idUsuario } = req.body;
+// Actualizar perfil completo del usuario
+router.put('/usuario/actualizar', async (req, res) => {
+  const idUsuario = 2; // Suplente mientras no hay login real
+  const { nombre, biografia, fotoPerfilUrl, redesSociales, idRol } = req.body;
+  console.log('Datos recibidos para actualizar perfil:', req.body);
 
   try {
-    const query = `
-      INSERT INTO redSocial (tipo, url, idUsuario)
-      VALUES ($1, $2, $3)
-    `;
-    await pool.query(query, [tipo, url, idUsuario]);
+    const idRolInt = parseInt(idRol);
+    if (isNaN(idRolInt)) {
+      return res.status(400).json({ mensaje: 'idRol inválido' });
+    }
 
-    res.status(200).json({ mensaje: 'Red social agregada con éxito' });
+    // Usa idRolInt en la query
+    await pool.query(
+      `UPDATE usuario SET nombre = $1, biografia = $2, fotoPerfilUrl = $3, idRol = $4 WHERE idUsuario = $5`,
+      [nombre, biografia, fotoPerfilUrl, idRolInt, idUsuario]
+    );
+
+    // Eliminar redes anteriores
+    await pool.query(`DELETE FROM redSocial WHERE idUsuario = $1`, [idUsuario]);
+
+    // Insertar redes nuevas
+    for (const red of redesSociales) {
+      if (!red.tipo || !red.url) continue;
+      await pool.query(
+        `INSERT INTO redSocial (tipo, url, idUsuario) VALUES ($1, $2, $3)`,
+        [red.tipo, red.url, idUsuario]
+      );
+    }
+
+    res.json({ mensaje: 'Perfil actualizado correctamente' });
   } catch (error) {
-    console.error('Error al guardar red social:', error);
-    res.status(500).json({ error: 'Error al guardar red social' });
+    console.error('Error al actualizar perfil:', error);
+    res.status(500).json({ mensaje: 'Error interno al actualizar perfil' });
   }
 });
 

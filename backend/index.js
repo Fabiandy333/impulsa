@@ -20,6 +20,7 @@ app.use(express.json());
 
 app.use('/api', usuarioRoutes);
 app.use('/api', loginRoutes);
+
 app.get('/', (req, res) => {
   res.send('Backend funcionando');
 });
