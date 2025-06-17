@@ -5,6 +5,7 @@ import "./Register.css";
 import brainImage from '../../../../public/brain-people.png';
 import eyeIcon from '../../../../public/eye.svg';
 import eyeOffIcon from '../../../../public/eye-off.svg';
+import axios from "axios";
 
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -16,17 +17,27 @@ const Register = () => {
   const [genero, setGenero] = useState("");
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const { registerWithEmail, logout } = useAuth();
+  const {logout } = useAuth();
+  const navigate = useNavigate();
 
   const togglePassword = () => setShowPassword(!showPassword);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError(null);
+
     try {
-      await registerWithEmail(email, password);
+      const nombreCompleto = `${nombre} ${apellido}`;
+      await axios.post('http://localhost:43674/api/usuario', {
+        nombre: nombreCompleto,
+        email,
+        contraseña: password,
+        idRol: 1, // Por defecto, puedes cambiarlo si quieres asignar diferentes roles
+      });
+
       await logout();
       setSuccess("Te has registrado correctamente.");
+      setTimeout(() => navigate("/inicio-sesion"), 2000);
     } catch (err) {
       console.error(err);
       setError("Error al registrar. Intenta con otro correo.");
@@ -37,7 +48,7 @@ const Register = () => {
     <div className="register-container">
       <div className="register-wrapper">
         <div className="register-left">
-          <h1 className="main-title">Impulsa tus ideas,haz realidad tus proyectos.</h1>
+          <h1 className="main-title">Impulsa tus ideas, haz realidad tus proyectos.</h1>
           <p className="subtitle">¡Regístrate y comienza a explorar!</p>
         </div>
 
