@@ -5,35 +5,49 @@ import "./Login.css";
 import brainImage from '../../../../public/brain-people.png';
 import eyeIcon from '../../../../public/eye.svg';
 import eyeOffIcon from '../../../../public/eye-off.svg';
+import axios from "axios";
 
 const Login = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState(null);
-  const { loginGoogleWithPopup, loginWithEmail } = useAuth();
   const navigate = useNavigate();
-
   const togglePassword = () => setShowPassword(!showPassword);
+  const { loginFromDatabase, loginWithEmail, loginGoogleWithPopup, registerUserIfNotExists } = useAuth();
 
   const handleEmailLogin = async (e) => {
     e.preventDefault();
+    setError(null);
     try {
-      await loginWithEmail(email, password);
-      navigate("/inicio");
-    } catch (err) {
-      setError("Correo o contraseña incorrectos.");
+      await loginFromDatabase(email, password);
+      navigate('/inicio');
+    } catch (error) {
+      if (error.response && error.response.status === 401) {
+        setError('Correo o contraseña incorrectos.');
+      } else {
+        setError('Error al iniciar sesión.');
+      }
     }
   };
 
   const handleGoogleLogin = async () => {
     try {
-      await loginGoogleWithPopup();
+      const userCredential = await loginGoogleWithPopup();
+      const user = userCredential.user;
+
+      const email = user.email;
+      const nombre = user.displayName || "Usuario Google";
+
+      await registerUserIfNotExists(email, nombre);
+
       navigate("/inicio");
     } catch (error) {
-      console.error(error);
+      console.error("Error con Google:", error);
+      setError("No se pudo iniciar sesión con Google.");
     }
   };
+
 
   return (
     <div className="login-container">
@@ -52,7 +66,7 @@ const Login = () => {
         <div className="login-right">
           <h2 className="login-title">Bienvenido de nuevo</h2>
 
-          <form className="login-form" onSubmit={handleEmailLogin}>
+          <form className="login-form">
             <input
               type="email"
               placeholder="Ingresar correo"
@@ -81,7 +95,7 @@ const Login = () => {
 
             <a href="#" className="forgot-password">¿Olvidaste tu contraseña?</a>
             {error && <p className="error-message">{error}</p>}
-            <button type="submit" className="btn-login" title="Iniciar sesión">Iniciar sesión</button>
+            <button type="submit" className="btn-login" title="Iniciar sesión" onClick={handleEmailLogin}> iniciar sesion </button>
           </form>
 
           <div className="separator">O continúa con</div>

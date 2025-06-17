@@ -45,7 +45,6 @@ const proyectosEjemplo = Array.from({ length: 20 }, (_, i) => ({
   meta: 5000 + (i * 1000),
   recaudado: 2000 + (i * 500),
   fechaCierre: `2025-${12 - (i % 6)}-${15 + (i % 10)}`,
-  imagen: `https://via.placeholder.com/600x400?text=Proyecto+${i + 1}`,
   recompensas: [
     { monto: 20, descripcion: "Recompensa básica" },
     { monto: 50, descripcion: "Recompensa premium" },

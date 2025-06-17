@@ -13,7 +13,7 @@ export const Perfil = () => {
     const imagen = 'foto.jpg';
 
     try {
-      const response = await axios.post('http://localhost:3000/api/perfil', {
+      const response = await axios.post('https://localhost:43674/api/perfil', {
         descripcion,
         facebook,
         instagram,
