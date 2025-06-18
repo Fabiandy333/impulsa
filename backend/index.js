@@ -4,6 +4,8 @@ import cors from 'cors';
 import dotenv from 'dotenv';
 import usuarioRoutes from './src/routes/usuario.js';
 import loginRoutes from './src/routes/login.js';
+import proyectoRoutes from './src/routes/proyecto.js';
+import categoriaRoutes from './src/routes/categoria.js';
 
 dotenv.config();
 
@@ -20,6 +22,8 @@ app.use(express.json());
 
 app.use('/api', usuarioRoutes);
 app.use('/api', loginRoutes);
+app.use('/api', proyectoRoutes);
+app.use('/api', categoriaRoutes);
 
 app.get('/', (req, res) => {
   res.send('Backend funcionando');

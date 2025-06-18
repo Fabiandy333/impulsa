@@ -1,0 +1,100 @@
+:root {
+  --color-principal: #4a90e2;
+  --color-fondo: #f9f9f9;
+  --color-texto: #333;
+  --color-borde: #ccc;
+  --color-hover: #3579c3;
+  --color-blanco: #ffffff;
+}
+
+.crear-proyecto {
+  max-width: 800px;
+  margin: 2rem auto;
+  padding: 2rem;
+  background: var(--color-blanco);
+  border-radius: 1rem;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.05);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.crear-proyecto h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: var(--color-texto);
+  font-size: 2rem;
+}
+
+.formulario-proyecto {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.campo {
+  display: flex;
+  flex-direction: column;
+}
+
+.campo label {
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--color-texto);
+}
+
+.campo input,
+.campo textarea,
+.campo select {
+  padding: 0.75rem 1rem;
+  background-color: var(--color-blanco);
+  color: var(--color-texto);
+  border: 1px solid var(--color-borde);
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  transition: border 0.3s ease, box-shadow 0.3s ease;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.campo input[type="date"]::-webkit-calendar-picker-indicator {
+  filter: invert(1); /* Si tienes modo oscuro, ajusta con invert(1) */
+  cursor: pointer;
+}
+
+.campo input:focus,
+.campo textarea:focus,
+.campo select:focus {
+  border-color: var(--color-principal);
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(74, 144, 226, 0.15);
+}
+
+.campo textarea {
+  resize: vertical;
+  min-height: 100px;
+}
+
+.btn-crear {
+  margin-top: 1rem;
+  padding: 0.75rem;
+  font-size: 1.1rem;
+  background-color: var(--color-principal);
+  color: var(--color-blanco);
+  border: none;
+  border-radius: 0.5rem;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background-color 0.3s ease;
+}
+
+.btn-crear:hover {
+  background-color: var(--color-hover);
+}
+
+@media screen and (max-width: 600px) {
+  .crear-proyecto {
+    padding: 1.5rem;
+  }
+
+  .btn-crear {
+    font-size: 1rem;
+  }
+}
