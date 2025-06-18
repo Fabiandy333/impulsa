@@ -16,12 +16,12 @@ const useAuth = create((set) => {
       if (user) {
         // Usuario Firebase
         localStorage.removeItem("user_pg");
-        set({ userLooged: { ...user, tipo: "firebase" } });
+        set({ userLooged: { ...user} });
       } else {
         // Verificar si hay usuario guardado desde base de datos
         const userPG = localStorage.getItem("user_pg");
         if (userPG) {
-          set({ userLooged: { ...JSON.parse(userPG), tipo: "postgres" } });
+          set({ userLooged: { ...JSON.parse(userPG)} });
         } else {
           set({ userLooged: null });
         }
@@ -33,6 +33,8 @@ const useAuth = create((set) => {
 
   return {
     userLooged: null,
+
+    setUserLooged: (usuario) => set({ userLooged: usuario }),
 
     loginGoogleWithPopup: async () => {
       try {
@@ -68,7 +70,9 @@ const useAuth = create((set) => {
         });
         const usuario = response.data.user;
         set({ userLooged: usuario });
-
+        console.log("Usuario recibido desde backend:", response.data.user);
+        localStorage.setItem("user_pg", JSON.stringify(usuario));
+        set({ userLooged: usuario });
         return usuario;
       } catch (error) {
         console.error("Error login desde BD:", error);
@@ -96,7 +100,7 @@ const useAuth = create((set) => {
         nombre,
         email,
         contraseña: "google-login",
-        idrol: 2, // rol por defecto
+        idRol: 1, // rol por defecto
       });
 
       console.log("Usuario registrado en BD:", response.data);

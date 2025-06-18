@@ -18,10 +18,10 @@ router.post('/login', async (req, res) => {
       res.status(200).json({
         message: 'Inicio de sesión exitoso',
         user: {
-          id: user.idUsuario,
+          idusuario: user.idusuario,
           nombre: user.nombre,
           correo: user.email,
-          rol: user.idRol
+          rol: user.idrol
         }
       });
     } else {

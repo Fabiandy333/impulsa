@@ -70,7 +70,6 @@ const Inicio = () => {
     <div className="inicio-container">
       <div className="header-inicio">
         <h2>Descubre proyectos innovadores</h2>
-        <p className="subtitulo">Apoya ideas que te inspiren y sé parte de su éxito.</p>
       </div>
 
       {cargando ? (
@@ -80,7 +79,6 @@ const Inicio = () => {
           <div className="proyectos-feed">
             {proyectos.map((proyecto) => (
               <div key={proyecto.id} className="proyecto-card">
-                <img src={proyecto.imagen} alt={proyecto.titulo} className="proyecto-imagen" />
                 <div className="proyecto-info">
                   <h2>{proyecto.titulo}</h2>
                   <p className="creador">Por: {proyecto.creador}</p>
