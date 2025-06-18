@@ -14,6 +14,7 @@ const Login = () => {
   const [error, setError] = useState(null);
   const navigate = useNavigate();
   const togglePassword = () => setShowPassword(!showPassword);
+  const { setUserLooged } = useAuth();
   const { loginFromDatabase, loginWithEmail, loginGoogleWithPopup, registerUserIfNotExists } = useAuth();
 
   const handleEmailLogin = async (e) => {
@@ -31,22 +32,38 @@ const Login = () => {
     }
   };
 
-  const handleGoogleLogin = async () => {
-    try {
-      const userCredential = await loginGoogleWithPopup();
-      const user = userCredential.user;
+const handleGoogleLogin = async () => {
+  try {
+    const userCredential = await loginGoogleWithPopup();
+    const user = userCredential.user;
 
-      const email = user.email;
-      const nombre = user.displayName || "Usuario Google";
+    const email = user.email;
+    const nombre = user.displayName || "Usuario Google";
 
-      await registerUserIfNotExists(email, nombre);
+    // 1. Registrar si no existe
+    await registerUserIfNotExists(email, nombre);
 
-      navigate("/inicio");
-    } catch (error) {
-      console.error("Error con Google:", error);
-      setError("No se pudo iniciar sesión con Google.");
-    }
-  };
+    // 2. Buscar datos completos en BD
+    const response = await axios.get(`http://localhost:43674/api/usuario/correo/${email}`);
+    const userBD = response.data;
+
+    const usuarioFinal = {
+      ...userBD,
+      tipo: "firebase"
+    };
+
+    // 3. Guardar en estado y localStorage
+    localStorage.setItem("user_pg", JSON.stringify(usuarioFinal));
+    setUserLooged(usuarioFinal); // usa el setter de zustand
+
+    // 4. Redirigir
+    navigate("/inicio");
+  } catch (error) {
+    console.error("Error con Google:", error);
+    setError("No se pudo iniciar sesión con Google.");
+  }
+};
+
 
 
   return (

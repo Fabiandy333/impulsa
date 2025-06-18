@@ -1,24 +1,31 @@
 import React, { useEffect, useState } from 'react';
 import './Perfil.css';
 import axios from 'axios';
+import useAuth from '../auth/use-auth';
 
 export const Perfil = () => {
   const [usuario, setUsuario] = useState(null);
   const [editando, setEditando] = useState(false);
   const [imagen, setImagen] = useState(null);
+  const { userLooged } = useAuth();
 
   useEffect(() => {
     const obtenerPerfil = async () => {
+      if (!userLooged || !userLooged.idusuario) {
+        console.warn("❗ userLooged no tiene idusuario:", userLooged);
+        return;
+      }
+
       try {
-        const res = await axios.get('http://localhost:43674/api/usuario/actual'); // Ajustar URL según backend
+        const res = await axios.get(`http://localhost:43674/api/usuario/${userLooged.idusuario}`);
         setUsuario(res.data);
       } catch (error) {
-        console.error('Error al obtener perfil:', error);
+        console.error('❌ Error al obtener perfil:', error);
       }
     };
 
     obtenerPerfil();
-  }, []);
+  }, [userLooged]);
 
   const handleGuardar = async () => {
     try {
@@ -30,7 +37,7 @@ export const Perfil = () => {
         redesSociales: usuario.redesSociales || []
       };
 
-      await axios.put('http://localhost:43674/api/usuario/actualizar', datosPerfil);
+      await axios.put(`http://localhost:43674/api/usuario/${userLooged.id}/actualizar`, datosPerfil);
       setEditando(false);
     } catch (err) {
       console.error('Error al guardar perfil:', err);

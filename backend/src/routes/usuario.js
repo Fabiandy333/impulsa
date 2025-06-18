@@ -23,9 +23,10 @@ router.post('/usuario', async (req, res) => {
 });
 
 
-// Obtener perfil del usuario logueado (por ahora simulando id 1)
-router.get('/usuario/actual', async (req, res) => {
-  const idUsuario = 2; // Suplente, luego se sacará del token de sesión
+// Obtener perfil del usuario logueado 
+router.get('/usuario/:id', async (req, res) => {
+  const idUsuario = parseInt(req.params.id);
+  console.log('Obteniendo perfil para el usuario con ID:', idUsuario);
 
   try {
     const usuarioQuery = `
@@ -63,8 +64,8 @@ router.get('/usuario/actual', async (req, res) => {
 });
 
 // Actualizar perfil completo del usuario
-router.put('/usuario/actualizar', async (req, res) => {
-  const idUsuario = 2; // Suplente mientras no hay login real
+router.put('/usuario/:id/actualizar', async (req, res) => {
+  const idUsuario = parseInt(req.params.id);
   const { nombre, biografia, fotoPerfilUrl, redesSociales, idRol } = req.body;
   console.log('Datos recibidos para actualizar perfil:', req.body);
 
@@ -98,5 +99,28 @@ router.put('/usuario/actualizar', async (req, res) => {
     res.status(500).json({ mensaje: 'Error interno al actualizar perfil' });
   }
 });
+
+// src/routes/usuario.js
+
+router.get('/usuario/correo/:email', async (req, res) => {
+  const { email } = req.params;
+
+  try {
+    const result = await pool.query(
+      'SELECT idusuario, nombre, email, idrol FROM usuario WHERE email = $1',
+      [email]
+    );
+
+    if (result.rows.length > 0) {
+      res.status(200).json(result.rows[0]);
+    } else {
+      res.status(404).json({ message: 'Usuario no encontrado' });
+    }
+  } catch (error) {
+    console.error('Error al buscar usuario por correo:', error);
+    res.status(500).json({ message: 'Error del servidor' });
+  }
+});
+
 
 export default router;
