@@ -2,12 +2,15 @@ import React, { useEffect, useState } from 'react';
 import './Perfil.css';
 import axios from 'axios';
 import useAuth from '../auth/use-auth';
+import avatar from "../../../public/avatar.png";
 
 export const Perfil = () => {
   const [usuario, setUsuario] = useState(null);
   const [editando, setEditando] = useState(false);
   const [imagen, setImagen] = useState(null);
   const { userLooged } = useAuth();
+  const [proyectosCreados, setProyectosCreados] = useState([]);
+  const [proyectosApoyados, setProyectosApoyados] = useState([]);
 
   useEffect(() => {
     const obtenerPerfil = async () => {
@@ -24,6 +27,23 @@ export const Perfil = () => {
       }
     };
 
+    const fetchProyectos = async () => {
+      if (!userLooged?.idusuario) return;
+
+      try {
+        const creadosRes = await axios.get(`http://localhost:43674/api/usuario/${userLooged.idusuario}/proyectos-creados`);
+        const apoyadosRes = await axios.get(`http://localhost:43674/api/usuario/${userLooged.idusuario}/proyectos-apoyados`);
+        
+        setProyectosCreados(creadosRes.data);
+        console.log('✅ Proyectos creados:', creadosRes.data);
+        console.log('✅ Proyectos apoyados:', apoyadosRes.data);
+        setProyectosApoyados(apoyadosRes.data);
+      } catch (error) {
+        console.error('❌ Error al obtener proyectos:', error);
+      }
+    };
+
+    fetchProyectos();
     obtenerPerfil();
   }, [userLooged]);
 
@@ -37,7 +57,7 @@ export const Perfil = () => {
         redesSociales: usuario.redesSociales || []
       };
 
-      await axios.put(`http://localhost:43674/api/usuario/${userLooged.id}/actualizar`, datosPerfil);
+      await axios.put(`http://localhost:43674/api/usuario/${userLooged.idusuario}/actualizar`, datosPerfil);
       setEditando(false);
     } catch (err) {
       console.error('Error al guardar perfil:', err);
@@ -78,7 +98,7 @@ export const Perfil = () => {
     <div className="perfil-container">
       <div className="perfil-sidebar">
         <div className="perfil-avatar">
-          <img src={imagen ? URL.createObjectURL(imagen) : usuario.fotoPerfilUrl || '/user-icon.png'} alt="avatar" />
+          <img src={imagen ? URL.createObjectURL(imagen) : usuario.fotoPerfilUrl || avatar} alt="avatar" />
           <div className="perfil-upload">
             <input type="file" onChange={handleImagenChange} />
           </div>
@@ -154,14 +174,48 @@ export const Perfil = () => {
         </section>
 
         <section className="perfil-seccion">
-          <h3>Proyectos creados</h3>
-          <p>Aquí puedes listar los proyectos que creó el usuario.</p>
-        </section>
+        <h3>Proyectos creados</h3>
+        <div className="tarjetas-contenedor">
+          {(proyectosCreados || []).map((proyecto) => {
+            const recaudado = proyecto.recaudado ?? 0;
+            const montometa = proyecto.montometa ?? 1;
+            const porcentaje = Math.min(Math.round((recaudado / montometa) * 100), 100);
 
-        <section className="perfil-seccion">
-          <h3>Proyectos apoyados</h3>
-          <p>Aquí puedes listar los proyectos que ha apoyado.</p>
-        </section>
+            return (
+              <div key={proyecto.idproyecto} className="tarjeta-proyecto">
+                <h4>{proyecto.titulo}</h4>
+                <p className="descripcion">{proyecto.descripcion}</p>
+                <p className="meta">
+                  ${Number(proyecto.recaudado).toLocaleString("es-CO")} / ${Number(proyecto.montometa).toLocaleString("es-CO")}
+                </p>
+
+                <div className="barra-progreso">
+                  <div className="progreso" style={{ width: `${porcentaje}%` }}></div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </section>
+
+      <section className="perfil-seccion">
+        <h3>Proyectos apoyados</h3>
+        <div className="tarjetas-contenedor">
+          {(proyectosApoyados || []).map((proyecto) => {
+            const montoApoyado = proyecto.monto ?? 0;
+            return (
+              <div key={proyecto.idproyecto} className="tarjeta-proyecto apoyado">
+                <h4>{proyecto.titulo}</h4>
+                <p className="descripcion">{proyecto.descripcion}</p>
+                <p className="monto-apoyado">
+                  💰 Apoyaste con ${Number(proyecto.monto).toLocaleString("es-CO")}
+                </p>
+
+              </div>
+            );
+          })}
+        </div>
+      </section>
 
         <div className="perfil-acciones">
           {editando ? (

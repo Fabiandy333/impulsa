@@ -14,7 +14,6 @@ const CreateProject = () => {
     imagenPrincipalUrl: '',
     idCategoria: '',
   });
-  console.log('👤 Usuario autenticado:', userLooged);
   const [categorias, setCategorias] = useState([]);
   
 

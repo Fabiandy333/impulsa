@@ -316,3 +316,233 @@ html, body {
 .proyectos-feed-container::-webkit-scrollbar-thumb:hover {
   background: #2980b9;
 }
+
+/* Título del modal */
+.modal-apoyo h3 {
+  font-size: 1.8rem;
+  text-align: center;
+  color: #222;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Estilo general del modal */
+.modal-apoyo {
+  background: #ffffff;
+  padding: 30px;
+  border-radius: 12px;
+  position: relative;
+  width: 100%;
+  max-width: 430px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Input del monto */
+.modal-apoyo input[type="text"] {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  font-size: 1.1rem;
+  margin-bottom: 1.2rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f2f4f7;
+  color: #111;
+  box-shadow: inset 0 1px 2px rgba(0,0,0,0.05);
+  transition: border-color 0.2s;
+}
+
+.modal-apoyo input[type="text"]:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+/* Label + Select */
+.modal-apoyo label {
+  display: block;
+  font-weight: 500;
+  margin-bottom: 0.7rem;
+  color: #333;
+}
+
+.modal-apoyo select {
+  width: 100%;
+  padding: 0.7rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+  background-color: #f2f4f7;
+  color: #111;
+  margin-bottom: 1.2rem;
+  transition: border-color 0.2s;
+}
+
+.modal-apoyo select:focus {
+  border-color: #28a745;
+  outline: none;
+}
+
+/* Checkbox */
+.modal-apoyo .anonima-checkbox {
+  display: flex;
+  align-items: center;
+  margin-bottom: 1.8rem;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.modal-apoyo .anonima-checkbox input {
+  margin-right: 0.6rem;
+  transform: scale(1.2);
+}
+
+/* Botón confirmar */
+.modal-apoyo button {
+  width: 100%;
+  padding: 0.9rem;
+  background-color: #28a745;
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.05rem;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.modal-apoyo button:hover {
+  background-color: #1f7d36;
+}
+
+/* Botón cerrar (X) */
+.modal-apoyo .cerrar-modal {
+  all: unset;
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  font-size: 1.3rem;
+  font-weight: bold;
+  color: #888;
+  cursor: pointer;
+  background: transparent;
+  border-radius: 50%;
+  padding: 4px;
+  transition: background-color 0.2s;
+}
+
+.modal-apoyo .cerrar-modal:hover {
+  background-color: #f2f2f2;
+  color: #000;
+}
+
+.modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  min-height: 100vh;
+  background: rgba(0,0,0,0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center; /* Esto centra verticalmente */
+  z-index: 999;
+  padding: 1rem;
+  box-sizing: border-box;
+}
+
+.mensaje-confirmacion {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background-color: #f9f9f9;
+  border-left: 5px solid #28a745;
+  padding: 20px 25px;
+  max-width: 400px;
+  border-radius: 10px;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.1);
+  color: #333;
+  animation: fadeIn 0.5s ease-in-out;
+  z-index: 9999;
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+
+.mensaje-confirmacion h4 {
+  margin-top: 0;
+  color: #28a745;
+  font-size: 1.4rem;
+}
+
+.mensaje-confirmacion p {
+  margin: 8px 0;
+  font-size: 1rem;
+  line-height: 1.5;
+}
+
+/* Animación de entrada suave */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-5px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.tarjetas-contenedor {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 1.5rem;
+}
+
+.tarjeta-proyecto {
+  background: #fff;
+  border-radius: 12px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+  transition: transform 0.2s ease;
+}
+
+.tarjeta-proyecto:hover {
+  transform: translateY(-3px);
+}
+
+.tarjeta-proyecto h4 {
+  margin: 0 0 0.5rem;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.tarjeta-proyecto .descripcion {
+  font-size: 0.95rem;
+  margin-bottom: 0.7rem;
+  color: #555;
+}
+
+.tarjeta-proyecto .meta,
+.tarjeta-proyecto .monto-apoyado {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin-bottom: 0.6rem;
+  color: #222;
+}
+
+.barra-progreso {
+  width: 100%;
+  background-color: #e0e0e0;
+  height: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.progreso {
+  background-color: #28a745;
+  height: 100%;
+  transition: width 0.3s ease;
+}
